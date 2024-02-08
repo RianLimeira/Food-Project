@@ -5,10 +5,14 @@ import { useState, useRef } from "react";
 import { CATEGORIES, MENU } from "@/utils/data/products";
 import { Products } from "@/components/products";
 import { Link } from "expo-router";
+import { useCartStore } from "@/stores/cart-store";
 
 export default function Home() {
+  const cartStore = useCartStore()
   const [category, setCategory] = useState("");
   const sectionListRef = useRef<SectionList>(null);
+
+  const cartQuantityItems = cartStore.products.reduce((total, product) => total + product.quantity, 0)
 
   function handleCategorySelect(selectedCategory: string) {
     setCategory(selectedCategory);
@@ -28,7 +32,7 @@ export default function Home() {
 
   return (
     <View className=" flex-1 pt-12">
-      <Header title="Faça seu pedido" cartQuantityItems={1} />
+      <Header title="Faça seu pedido" cartQuantityItems={cartQuantityItems} />
       {/* Exemplo de listas: */}
       {/* <CategoryButton title="Lanche do Dia"  />
                 <CategoryButton title="Lanche do Dia" isSelected />
