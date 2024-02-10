@@ -11,8 +11,9 @@ import { Feather } from "@expo/vector-icons";
 import { LinkButton } from "@/components/link-button";
 import { useState } from "react";
 import { useNavigation } from "expo-router";
+import { Phone } from "@/components/phone-number";
 
-const PHONE_NUMBER = 'TELEFONE DO LOCAL'
+const PHONE_NUMBER = 'AQUI O NUMERO DE TELEFONE'
 
 export default function Cart() {
   const [address, setAddress] = useState("");
@@ -59,7 +60,7 @@ export default function Cart() {
 
     \n Valor Total: ${total}
     `
-    Linking.openURL(`http://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${message}`)
+    Linking.openURL(`http://api.whatsapp.com/send?phone=${Phone()}&text=${message}`)
     cartStore.clear()
     navigation.goBack()
   }
