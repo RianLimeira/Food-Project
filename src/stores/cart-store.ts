@@ -13,6 +13,7 @@ type StateProps = {
     products: ProductCartProps[];
     add: (product: ProductProps) => void;
     remove: (productId: string) => void
+    clear: () => void
 };
 
 // guardar e compartilhar com todo o app
@@ -27,6 +28,9 @@ export const useCartStore = create(
         set((state) => ({
             products: cartInMemory.remove(state.products, productId),
         })),
+
+    clear: () => set(() => ({ products: []})), 
+
 }), {
     name: "nlw-expert:cart",
     storage: createJSONStorage(() => AsyncStorage)
