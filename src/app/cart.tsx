@@ -1,11 +1,14 @@
 import { Header } from "@/components/header";
-import { useCartStore } from "@/stores/cart-store";
-import { ScrollView, Text, View } from "react-native";
+import { ProductCartProps, useCartStore } from "@/stores/cart-store";
+import { Alert, ScrollView, Text, View } from "react-native";
 import Product from "./product/[id]";
 import { Products } from "@/components/products";
 import { formatCurrency } from "@/utils/functions/format-currency";
 import { Input } from "@/components/input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Button } from "@/components/button";
+import { Feather } from "@expo/vector-icons";
+import { LinkButton } from "@/components/link-button";
 
 export default function Cart() {
   const cartStore = useCartStore();
@@ -17,6 +20,19 @@ export default function Cart() {
     )
   );
 
+  function handleProductRemove(product: ProductCartProps) {
+    Alert.alert("Remover", `Deseja remover 1 qts de ${product.title} do carrinho ?`,
+      [
+        {
+          text: "Cancelar",
+        },
+        {
+          text: "Remover",
+          onPress: () => cartStore.remove(product.id),
+        },
+      ])
+  }
+
   return (
     <View className="flex-1 pt-8">
       <Header title="Seu carrinho" />
@@ -26,7 +42,11 @@ export default function Cart() {
             {cartStore.products.length > 0 ? (
               <View className="border-b border-slate-700">
                 {cartStore.products.map((product) => (
-                  <Products key={product.id} data={product} />
+                  <Products
+                    key={product.id}
+                    data={product}
+                    onPress={() => handleProductRemove(product)}
+                  />
                 ))}
               </View>
             ) : (
@@ -44,6 +64,16 @@ export default function Cart() {
           </View>
         </ScrollView>
       </KeyboardAwareScrollView>
+
+      <View className="p-5 gap-5">
+        <Button>
+          <Button.Text>Enviar pedido</Button.Text>
+          <Button.Icon>
+            <Feather name="arrow-right-circle" size={20} />
+          </Button.Icon>
+        </Button>
+        <LinkButton title="Voltar a Home" href="/" />
+      </View>
     </View>
   );
 }
